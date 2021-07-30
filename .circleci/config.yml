@@ -13,9 +13,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name "frontend-${ID}"
+            aws cloudformation delete-stack --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:6}"
             aws cloudformation wait stack-delete-complete
-            aws cloudformation delete-stack --stack-name "backend-${ID}"
+            aws cloudformation delete-stack --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:6}"
             aws cloudformation wait stack-delete-complete
             #exit 1
 
@@ -134,26 +134,26 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --tags project="udapeople-${ID}" \
-              --stack-name "backend-${ID}" \
-              --parameter-overrides ID="${ID}"  
+              --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
+              --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:6}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
               #exit 1
       - run:
           name: wait for the backend stack to be provisioned
-          command: aws cloudformation wait stack-create-complete --stack-name "backend-${ID}"
+          command: aws cloudformation wait stack-create-complete --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:6}"
 
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project="udapeople-${ID}" \
-              --stack-name "frontend-${ID}" \
-              --parameter-overrides ID="${ID}"  
+              --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
+              --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:6}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
               #exit 1
       - run:
           name: wait for the frontend stack to be provisioned
-          command: aws cloudformation wait stack-create-complete --stack-name "frontend-${ID}"
+          command: aws cloudformation wait stack-create-complete --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:6}"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
