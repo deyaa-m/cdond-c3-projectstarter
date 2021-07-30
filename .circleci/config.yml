@@ -76,7 +76,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: node test:e2e                
+      - run: npm run test                
 
   test-backend:
     docker:
@@ -89,7 +89,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run: node test:e2e                
+      - run: npm run test                
   scan-frontend:
     docker:
       # Docker image here
