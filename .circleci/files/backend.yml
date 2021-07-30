@@ -35,3 +35,9 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
+
+Outputs:
+  ip
+    Value: !Ref EC2Instance.PublicIp
+    Export:
+      Name: IP
