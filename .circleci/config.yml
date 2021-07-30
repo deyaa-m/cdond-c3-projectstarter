@@ -70,11 +70,14 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
-      - checkout
       # Checkout code from git
       # Restore from cache
       # Your job code here
-                
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run: node test:e2e                
+
   test-backend:
     docker:
       # Docker image here
@@ -84,6 +87,9 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run: node test:e2e                
   scan-frontend:
     docker:
       # Docker image here
