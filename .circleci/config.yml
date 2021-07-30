@@ -13,9 +13,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name frontend-${ID}
+            aws cloudformation delete-stack --stack-name "frontend-${ID}"
             aws cloudformation wait stack-delete-complete
-            aws cloudformation delete-stack --stack-name backend-${ID}
+            aws cloudformation delete-stack --stack-name "backend-${ID}"
             aws cloudformation wait stack-delete-complete
             #exit 1
 
