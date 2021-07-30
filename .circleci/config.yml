@@ -136,6 +136,10 @@ jobs:
               --parameter-overrides ID="${ID}"  
               #exit 1
       - run:
+          name: wait for the backend stack to be provisioned
+          command: aws cloudformation wait stack-create-complete --stack-name "backend-${ID}"
+
+      - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
@@ -144,6 +148,9 @@ jobs:
               --stack-name "frontend-${ID}" \
               --parameter-overrides ID="${ID}"  
               #exit 1
+      - run:
+          name: wait for the frontend stack to be provisioned
+          command: aws cloudformation wait stack-create-complete --stack-name "frontend-${ID}"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
