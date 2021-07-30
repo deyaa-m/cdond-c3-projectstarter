@@ -77,7 +77,7 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run: cd frontend
-      - run: npm run lint                
+      - run: npm start                
 
   test-backend:
     docker:
@@ -91,7 +91,7 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run: cd backend
-      - run: npm run lint                
+      - run: npm start                
   scan-frontend:
     docker:
       # Docker image here
