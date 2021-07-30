@@ -76,7 +76,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: cd frontend && npm run test || exit 0           
+      - run: cd frontend && npm run test        
 
   test-backend:
     docker:
