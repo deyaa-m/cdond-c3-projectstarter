@@ -125,7 +125,7 @@ jobs:
     steps:
       # Checkout code from git
       - aws-cli/install
-      - run: checkout
+      - checkout
       - run:
           name: Ensure back-end infrastructure exists
           command: |
