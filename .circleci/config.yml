@@ -101,7 +101,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: cd frontend && npm audit --audit-level=critical
+      - run: cd frontend && npm audit --audit-level=critical && npm audit fix --audit-level=critical --force
   scan-backend:
     docker:
       # Docker image here
@@ -113,7 +113,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: cd backend && npm audit --audit-level=critical
+      - run: cd backend && npm audit --audit-level=critical && npm audit fix --audit-level=critical --force
 
   deploy-infrastructure:
     docker:
