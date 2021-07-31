@@ -178,12 +178,12 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - checkout
+      - attach_workspace:
+          at: ~/project/.circleci/ansible/
       - aws-cli/install
       - add_ssh_keys:
           fingerprints:
             - "72:5a:f5:fe:95:8b:80:8f:c3:4c:0c:2f:e9:65:c2:fd"
-      - attach_workspace:
-          at: ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
