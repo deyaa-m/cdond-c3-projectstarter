@@ -172,7 +172,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       # Add ssh keys with fingerprint
@@ -180,17 +180,17 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project/.circleci/ansible/
-      - aws-cli/install
       - add_ssh_keys:
           fingerprints:
             - "72:5a:f5:fe:95:8b:80:8f:c3:4c:0c:2f:e9:65:c2:fd"
       - run:
           name: Install dependencies
           command: |
-            apt update -y
-            apt install -y software-properties-common
-            add-apt-repository --yes --update ppa:ansible/ansible
-            apt install -y ansible curl
+            apk update 
+            apk add ansible curl zip unzip
+            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+            unzip awscli-bundle.zip
+            ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
             #exit 1
       - run:
           name: Configure server
