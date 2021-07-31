@@ -196,6 +196,7 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
             #exit 1
       # Here's where you will add some code to rollback on failure      
+      - destroy-environment      
 
   run-migrations:
     docker:
@@ -334,8 +335,8 @@ workflows:
       #    filters:
       #      branches:
       #        only: [test-feature-branch]
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       #- run-migrations:
       #    requires: [configure-infrastructure]
       #- deploy-frontend:
