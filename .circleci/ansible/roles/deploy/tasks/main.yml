@@ -1,0 +1,13 @@
+## Copy backend files from circleci docker container to server
+---
+- name: create app dir
+  file:
+    path: ~/udapeople
+    state: directory
+
+- name: copy files
+  copy:
+    src: ~/project/*
+    dest: ~/udapeople/
+    owner: ubuntu
+    group: ubuntu
