@@ -1,4 +1,20 @@
+---
+
 - name: Download nodejs
   command: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+
+- name: update cache
+  become: yes
+  apt:
+    update_cache: yes
+
 - name: install nodejs
-  command: sudo apt-get install -y nodejs
+  become: yes
+  apt: 
+    name: nodejs
+    state: present
+
+- name: install pm2
+  npm:
+    name: pm2
+    global: yes
