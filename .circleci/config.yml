@@ -209,16 +209,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - attach_workspace:
-          at: ~/project/.circleci/ansible/
-      - add_ssh_keys:
-          fingerprints:
-            - "72:5a:f5:fe:95:8b:80:8f:c3:4c:0c:2f:e9:65:c2:fd"
-      - run:
-          name: Deploy backend
-          command: |
-            # your code here
-            scp -r ./* ubuntu@$(cat .circleci/ansible/inventory.txt):~/udapeople/ || exit 0
       - run:
           name: Run migrations
           command: |
@@ -250,6 +240,7 @@ jobs:
             BACKEND_IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
+            npm
       - run:
           name: Deploy frontend objects
           command: |
