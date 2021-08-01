@@ -213,9 +213,8 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
-            npm i db-migrate
-            db-migrate up
-            exit 0
+            npm i -g db-migrate
+            db-migrate up || exit 0
       - run:
           name: Send migration results to memstash
           command: |
