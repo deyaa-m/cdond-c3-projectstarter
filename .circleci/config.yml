@@ -197,10 +197,10 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i inventory.txt configure-server.yml
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            ansible-playbook -i inventory.txt deploy-backend.yml -vv
             #exit 1
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment      
+      #- destroy-environment      
 
   run-migrations:
     docker:
@@ -213,6 +213,7 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
+            npm i db-migrate
             exit 1
       - run:
           name: Send migration results to memstash
