@@ -7,7 +7,7 @@
 
 - name: copy files
   copy:
-    src: ./
+    src: ../../
     dest: ~/udapeople/
     owner: ubuntu
     group: ubuntu
