@@ -292,12 +292,18 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add ansible nodejs npm
+            apk add ansible nodejs npm tar
+      - run:
+          name: build backend
+          command: |
+            cd backend && npm i && npm run build
+      - run:
+          name: tar backend
+          command: tar cvfz dist.tgz dist/
       - run:
           name: Deploy backend
           command: |
             # your code here
-            cd backend && npm i && npm run build
             cd ../.circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
