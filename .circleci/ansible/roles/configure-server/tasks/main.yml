@@ -33,7 +33,7 @@
   environments:
     ENVIRONMENT: "production"
     TYPEORM_HOST: "udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com"
-    TYPEORM_PORT: "5532"
+    TYPEORM_PORT: "5432"
     TYPEORM_USERNAME: "udaAdmin"
     TYPEORM_PASSWORD: "udaAdmin01"
     #TYPEORM_DATABASE: "glee"
