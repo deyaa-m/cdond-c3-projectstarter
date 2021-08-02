@@ -8,7 +8,7 @@
 - name: copy files
   become: yes
   copy:
-    src: $(pwd)
+    src: /root/project/backend/dist
     dest: ~/udapeople
     owner: ubuntu
     group: ubuntu
