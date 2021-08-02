@@ -311,14 +311,11 @@ jobs:
           command: |
             apk add curl
       - run:
-          name: Get backend url
+          name: Backend smoke test
           command: |
-            IP="$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')"
+            IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
             echo ${IP}
-      - run:
-          name: Backend smoke test.
-          command: |
-            curl https://${IP}:3030/api/status
+            curl http://${IP}:3030/api/status
       - run:
           name: Frontend smoke test.
           command: |
