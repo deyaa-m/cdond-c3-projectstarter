@@ -235,7 +235,7 @@ jobs:
             sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin01' .env
             sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=glee' .env
             cat .env
-            npm run migrations
+            npm run migrations || exit 0
       - run:
           name: Send migration results to memstash
           command: |
