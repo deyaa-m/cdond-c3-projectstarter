@@ -297,15 +297,16 @@ jobs:
           name: build backend
           command: |
             cd backend && npm i && npm run build
+      - run:
+          name: tar backend
+          command: |
+            cd backend 
             tar cvfz dist.tgz ./dist/
-      #- run:
-      #    name: tar backend
-      #    command: tar cvfz dist.tgz ./dist/
       - run:
           name: Deploy backend
           command: |
             # your code here
-            cd ../.circleci/ansible
+            cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
 
