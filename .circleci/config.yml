@@ -312,7 +312,7 @@ jobs:
             apk add curl
       - run:
           name: Get backend url
-          command: |
+          shell: |
             IP="$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')"
       - run:
           name: Backend smoke test.
