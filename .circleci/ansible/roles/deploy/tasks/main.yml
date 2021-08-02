@@ -1,9 +1,9 @@
 ## Copy backend files from circleci docker container to server
 ---
-- name: tar backend locally
-  archive:
-    path: /root/project/backend/dist
-    dest: /root/project/backend/dist.tgz
+#- name: tar backend locally
+#  archive:
+#    path: /root/project/backend/dist
+#    dest: /root/project/backend/dist.tgz
 
 - name: untar backend on remote
   unarchive:
