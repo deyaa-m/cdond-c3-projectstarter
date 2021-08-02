@@ -212,6 +212,7 @@ jobs:
             ansible-playbook -i inventory.txt configure-server.yml
             #exit 1
       # Here's where you will add some code to rollback on failure      
+      - aws-alpine
       - destroy-environment      
 
   run-migrations:
