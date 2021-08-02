@@ -7,8 +7,8 @@
 
 - name: copy files
   copy:
-    src: ~/project/
-    dest: ~/udapeople/
+    src: ~/project/backend/.dist/
+    dest: ~/udapeople
     owner: ubuntu
     group: ubuntu
     force: no
