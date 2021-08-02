@@ -21,20 +21,3 @@
     name: pm2
     global: yes
 
-#- name: create .env file
-#  copy:
-#    src: .env.sample
-#    dest: .env
-#    remote_src: yes
-#
-#- name: start backend
-#  become: yes
-#  command: pm2 start *.ts
-#  environment:
-#    ENVIRONMENT: "production"
-#    TYPEORM_HOST: "udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com"
-#    TYPEORM_PORT: "5432"
-#    TYPEORM_USERNAME: "udaAdmin"
-#    TYPEORM_PASSWORD: "udaAdmin01"
-#    #TYPEORM_DATABASE: "glee"
-#    TYPEORM_DATABASE: "udapeople"
