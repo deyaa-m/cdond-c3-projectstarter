@@ -297,7 +297,7 @@ jobs:
           command: |
             # your code here
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt deploy-backend.yml -v
+            ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
 
   smoke-test:
@@ -392,7 +392,7 @@ workflows:
       #    requires: [run-migrations]
       - deploy-backend
       #    requires: [run-migrations]
-      - smoke-test
+      - smoke-test:
           requires: [deploy-backend]
       - cloudfront-update:
           requires: [smoke-test]
