@@ -120,7 +120,8 @@ jobs:
           command: |
             #apk add nodejs npm
             exit 0
-      - run: cd backend && npm run test || exit 0      
+      - run: cd backend && npm run test || exit 0
+
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -140,7 +141,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [backend-build]
       - run: 
           name: install dependencies
           command: |
