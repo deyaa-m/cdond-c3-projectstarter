@@ -313,16 +313,16 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
+            IP="$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')"
       - run:
           name: Backend smoke test.
           command: |
-            curl -s https://${IP}:3000/api/status
+            curl https://${IP}:3000/api/status
       - run:
           name: Frontend smoke test.
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"
-            curl ${URL} | grep "Welcome"
+            curl -s ${URL} | grep "Welcome"
       # Here's where you will add some code to rollback on failure  
 
   cloudfront-update:
