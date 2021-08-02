@@ -9,6 +9,7 @@ commands:
     steps:
       - run:
           name: install aws-cli
+          when: on_fail
           command: |
             apk update 
             apk add curl zip unzip
@@ -221,7 +222,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      #- run: apk add nodejs npm
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
