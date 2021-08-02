@@ -21,6 +21,12 @@
     name: pm2
     global: yes
 
+- name: create .env file
+  copy:
+    src: .env.sample
+    dest: .env
+    remote_src: yes
+
 - name: start backend
   become: yes
   command: pm2 start *.ts
