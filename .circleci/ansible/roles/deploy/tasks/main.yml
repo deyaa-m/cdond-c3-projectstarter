@@ -6,9 +6,10 @@
     state: directory
 
 - name: copy files
+  become: yes
   copy:
     src: ~/project/backend/dist/
     dest: ~/udapeople
     owner: ubuntu
     group: ubuntu
-    force: no
+    force: yes
