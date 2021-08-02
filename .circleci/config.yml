@@ -9,7 +9,6 @@ commands:
     steps:
       - run:
           name: install aws-cli
-          when: on_fail
           command: |
             apk update 
             apk add curl zip unzip
@@ -223,7 +222,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [frontend-build]
+
       - run:
           name: Run migrations
           command: |
