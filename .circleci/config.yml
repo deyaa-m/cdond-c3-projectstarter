@@ -221,21 +221,20 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      #- restore_cache:
-      #    keys: [backend-build]
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
             # Your code here
             cd backend && npm i
             cp .env.sample .env
-            sed -i '/TYPEORM_HOST/c\TYPEORM_HOST=udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com' .env
-            sed -i '/TYPEORM_PORT/c\TYPEORM_PORT=5432' .env
-            sed -i '/TYPEORM_USERNAME/c\TYPEORM_USERNAME=udaAdmin' .env
-            sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin01' .env
-            sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=udapeople' .env
+            #sed -i '/TYPEORM_HOST/c\TYPEORM_HOST=udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com' .env
+            #sed -i '/TYPEORM_PORT/c\TYPEORM_PORT=5432' .env
+            #sed -i '/TYPEORM_USERNAME/c\TYPEORM_USERNAME=udaAdmin' .env
+            #sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin01' .env
+            #sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=udapeople' .env
             cat .env
-            npm run build
             npm run migrations
       - run:
           name: Send migration results to memstash
