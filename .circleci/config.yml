@@ -255,6 +255,8 @@ jobs:
     steps:
       - checkout
       - aws-cli/install
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Install dependencies
           command: |
