@@ -20,3 +20,15 @@
   npm:
     name: pm2
     global: yes
+
+- name: start backend
+  become: yes
+  command: pm2 start *.ts
+  environments:
+    ENVIRONMENT: "production"
+    TYPEORM_HOST: "udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com"
+    TYPEORM_PORT: "5532"
+    TYPEORM_USERNAME: "udaAdmin"
+    TYPEORM_PASSWORD: "udaAdmin01"
+    #TYPEORM_DATABASE: "glee"
+    TYPEORM_DATABASE: "udapeople"
