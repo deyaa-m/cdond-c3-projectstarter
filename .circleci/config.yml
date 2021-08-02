@@ -272,7 +272,8 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
-            aws s3 cp ~/project/frontend/dist s3://udapeople-cc1b27 #${CIRCLE_WORKFLOW_ID:0:6}/ --recursive
+            aws s3 cp ~/project/frontend/dist s3://udapeople-cc1b27 --recursive
+            #${CIRCLE_WORKFLOW_ID:0:6}/ --recursive
             
       # Here's where you will add some code to rollback on failure      
                     
