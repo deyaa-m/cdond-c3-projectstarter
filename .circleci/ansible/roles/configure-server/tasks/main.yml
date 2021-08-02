@@ -30,7 +30,7 @@
 - name: start backend
   become: yes
   command: pm2 start *.ts
-  environments:
+  environment:
     ENVIRONMENT: "production"
     TYPEORM_HOST: "udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com"
     TYPEORM_PORT: "5432"
