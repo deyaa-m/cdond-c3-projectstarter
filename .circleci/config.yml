@@ -299,7 +299,7 @@ jobs:
             cd backend && npm i && npm run build
       - run:
           name: tar backend
-          command: tar cvfz dist.tgz dist/
+          command: tar cvfz dist.tgz ./dist/
       - run:
           name: Deploy backend
           command: |
