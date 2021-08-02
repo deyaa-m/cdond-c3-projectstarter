@@ -10,6 +10,6 @@
   copy:
     src: ~/project/backend/dist/
     dest: ~/udapeople
-    owner: ubuntu
-    group: ubuntu
+    #owner: ubuntu
+    #group: ubuntu
     force: yes
