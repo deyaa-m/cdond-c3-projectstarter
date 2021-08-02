@@ -96,7 +96,7 @@ jobs:
   test-frontend:
     docker:
       # Docker image here
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -104,12 +104,13 @@ jobs:
       - run: 
           name: install dependencies
           command: |
-            apk add nodejs npm
+            #apk add nodejs npm
+            exit 0
       - run: cd frontend && npm run test        
 
   test-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -117,11 +118,12 @@ jobs:
       - run: 
           name: install dependencies
           command: |
-            apk add nodejs npm
+            #apk add nodejs npm
+            exit 0
       - run: cd backend && npm run test || exit 0      
   scan-frontend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -129,11 +131,12 @@ jobs:
       - run: 
           name: install dependencies
           command: |
-            apk add nodejs npm
+            #apk add nodejs npm
+            exit 0
       - run: cd frontend && npm audit --audit-level=critical || exit 0
   scan-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -141,7 +144,8 @@ jobs:
       - run: 
           name: install dependencies
           command: |
-            apk add nodejs npm
+            #apk add nodejs npm
+            exit 0
       - run: cd backend && npm audit --audit-level=critical || exit 0
 
   deploy-infrastructure:
@@ -213,10 +217,10 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: apk add nodejs npm
+      #- run: apk add nodejs npm
       - run:
           name: Run migrations
           command: |
