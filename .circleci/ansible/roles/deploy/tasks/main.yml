@@ -1,15 +1,24 @@
 ## Copy backend files from circleci docker container to server
 ---
-#- name: create app dir
-#  file:
-#    path: ~/udapeople
-#    state: directory
+- name: tar backend locally
+  archive:
+    path: /root/project/backend/dist
+    dest: /root/project/backend/dist.tgz
+    delegate_to: localhost
 
-- name: copy files
-  become: yes
-  copy:
-    src: /root/project/backend/dist
+- name: untar backend on remote
+  unarchive:
+    src: /root/project/backend/dist.tgz
     dest: ~/udapeople
     owner: ubuntu
     group: ubuntu
-    force: yes
+    #remote_src: yes
+
+#- name: copy files
+#  become: yes
+#  copy:
+#    src: /root/project/backend/dist
+#    dest: ~/udapeople
+#    owner: ubuntu
+#    group: ubuntu
+#    force: yes
