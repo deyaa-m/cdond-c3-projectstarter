@@ -4,7 +4,6 @@
   archive:
     path: /root/project/backend/dist
     dest: /root/project/backend/dist.tgz
-    delegate_to: localhost
 
 - name: untar backend on remote
   unarchive:
