@@ -26,11 +26,8 @@ commands:
           when: on_fail
           command: |
             aws s3 rm s3://"udapeople-${CIRCLE_WORKFLOW_ID:0:6}" --recursive
-            aws cloudformation delete-stack --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:6}"
-            #aws cloudformation wait stack-delete-complete --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:6}"
-            aws cloudformation delete-stack --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:6}"
-            #aws cloudformation wait stack-delete-complete --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:6}"
-            #exit 1
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:6}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -163,7 +160,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name udapeople-backend \
+              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:6} \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
 
@@ -172,7 +169,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --stack-name udapeople-frontend \
+              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6} \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
               #exit 1
@@ -344,12 +341,12 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
-            --stack-name udapeople-CDN \
+            --stack-name udapeople-CDN-${CIRCLE_WORKFLOW_ID:0:6} \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:6}"
       # Here's where you will add some code to rollback on failure            
       - persist_to_workspace:
           root: ./
-          path:
+          paths:
             - workflow      
 cleanup:
     docker:
@@ -360,18 +357,37 @@ cleanup:
       - attach_workspace:
           at: ./
       - run:
-          name: Get old stack workflow id
+          name: workflow id
           command: |
-            # your code here
-            export OldWorkflowID="$(cat workflow)"
-            export STACKS=[frontend, backend, CDN] #put the list of stacks here
+            ID=$(cat workflow)
       - run:
-          name: Remove old stacks and files
+          name: delete front
           command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-            then
-              aws cloudformation delete-stack --stack-name 
-            fi
+            aws s3 rm s3://"udapeople-${CIRCLE_WORKFLOW_ID:0:6}" --recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
+      - run:
+          name: delete back
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
+
+      - run:
+          name: delete CDN
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-CDN-${ID}
+
+      #- run:
+      #    name: Get old stack workflow id
+      #    command: |
+      #      # your code here
+      #      export OldWorkflowID="$(cat workflow)"
+      #      export STACKS=[frontend, backend, CDN] #put the list of stacks here
+      #- run:
+      #    name: Remove old stacks and files
+      #    command: |
+      #      if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+      #      then
+      #        aws cloudformation delete-stack --stack-name 
+      #      fi
             
 
 workflows:
@@ -404,5 +420,5 @@ workflows:
           requires: [deploy-backend]
       - cloudfront-update:
           requires: [smoke-test]
-      #- cleanup:
-      #    requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
