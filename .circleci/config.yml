@@ -134,7 +134,11 @@ jobs:
           command: |
             #apk add nodejs npm
             exit 0
-      - run: cd frontend && npm audit --audit-level=critical || exit 0
+      - run: 
+          name: audit
+          command: |
+            cd frontend && npm audit --audit-level=critical || exit 0
+            npm audit fix --audit-level=critical --force|| exit 0
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -147,7 +151,11 @@ jobs:
           command: |
             #apk add nodejs npm
             exit 0
-      - run: cd backend && npm audit --audit-level=critical || exit 0
+      - run:
+          name: audit
+          command: |
+            cd backend && npm audit --audit-level=critical || exit 0
+            npm audit fix --audit-level=critical --force|| exit 0
 
   deploy-infrastructure:
     docker:
