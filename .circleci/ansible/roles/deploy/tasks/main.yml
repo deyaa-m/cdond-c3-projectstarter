@@ -2,8 +2,8 @@
 ---
 
 - name: untar backend on remote
+  become: yes
   unarchive:
-    become: yes
     src: /root/project/backend/dist.tgz
     dest: /home/pm2/udapeople
     owner: pm2
