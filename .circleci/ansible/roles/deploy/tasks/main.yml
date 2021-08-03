@@ -12,8 +12,8 @@
 - name: run js app
   become_user: pm2
   shell: 
-    chdir: /home/pm2/udapeople/backend
-    cmd: pm2 start webpack.config.js
+    chdir: /home/pm2/udapeople/dist
+    cmd: pm2 start main.js
 
     
 
