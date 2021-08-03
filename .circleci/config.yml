@@ -240,11 +240,11 @@ jobs:
             cd backend && npm i
             cp .env.sample .env
             echo ENVIRONMENT=production
-            sed -i '/TYPEORM_HOST/c\TYPEORM_HOST=glee.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com' .env
-            sed -i '/TYPEORM_PORT/c\TYPEORM_PORT=5432' .env
-            sed -i '/TYPEORM_USERNAME/c\TYPEORM_USERNAME=udaAdmin' .env
-            sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin.0' .env
-            sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=glee' .env
+            #sed -i '/TYPEORM_HOST/c\TYPEORM_HOST=glee.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com' .env
+            #sed -i '/TYPEORM_PORT/c\TYPEORM_PORT=5432' .env
+            #sed -i '/TYPEORM_USERNAME/c\TYPEORM_USERNAME=udaAdmin' .env
+            #sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin.0' .env
+            #sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=glee' .env
             cat .env
             npm run migrations || exit 0
       - run:
