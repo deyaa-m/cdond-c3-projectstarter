@@ -12,7 +12,7 @@
 - name: run js app
   become_user: pm2
   shell: 
-    chdir: /home/pm2/udapeople/dist
+    chdir: /home/pm2/udapeople/backend/dist
     cmd: pm2 start main.js
 
     
