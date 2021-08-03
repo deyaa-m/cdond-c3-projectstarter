@@ -126,8 +126,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      #- restore_cache:
-      #    keys: [frontend-build]
       - run: 
           name: install dependencies
           command: |
@@ -143,8 +141,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      #- restore_cache:
-      #    keys: [backend-build]
       - run: 
           name: install dependencies
           command: |
@@ -170,9 +166,6 @@ jobs:
               --stack-name udapeople-backend \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
-      #- run:
-      #    name: wait for the backend stack to be provisioned
-      #    command: aws cloudformation wait stack-create-complete --stack-name "udapeople-backend"
 
       - run:
           name: Ensure front-end infrastructure exist
@@ -183,9 +176,6 @@ jobs:
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
               #exit 1
-      #- run:
-      #    name: wait for the frontend stack to be provisioned
-      #    command: aws cloudformation wait stack-create-complete --stack-name "udapeople-frontend"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -219,7 +209,6 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i inventory.txt configure-server.yml
-            #exit 1
       # Here's where you will add some code to rollback on failure      
       - aws-alpine
       - destroy-environment      
@@ -230,22 +219,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
             # Your code here
-            cd backend && npm i
-            cp .env.sample .env
-            echo ENVIRONMENT=production
-            #sed -i '/TYPEORM_HOST/c\TYPEORM_HOST=glee.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com' .env
-            #sed -i '/TYPEORM_PORT/c\TYPEORM_PORT=5432' .env
-            #sed -i '/TYPEORM_USERNAME/c\TYPEORM_USERNAME=udaAdmin' .env
-            #sed -i '/TYPEORM_PASSWORD/c\TYPEORM_PASSWORD=udaAdmin.0' .env
-            #sed -i '/TYPEORM_DATABASE/c\TYPEORM_DATABASE=glee' .env
+            cd backend && cp .env.sample .env
+            echo ENVIRONMENT=production >> .env
+            npm i
             cat .env
-            npm run migrations || exit 0
+            npm run migrations
       - run:
           name: Send migration results to memstash
           command: |
@@ -392,9 +374,9 @@ workflows:
       #    requires: [build-frontend]
       #- test-backend:
       #    requires: [build-backend]
-      - scan-backend
+      #- scan-backend:
       #    requires: [build-backend]
-      - scan-frontend
+      #- scan-frontend:
       #    requires: [build-frontend]
       #- deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
@@ -403,7 +385,7 @@ workflows:
       ##        only: [test-feature-branch]
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
-      #- run-migrations:
+      - run-migrations
       #    requires: [configure-infrastructure]
       #- deploy-frontend:
       #    requires: [run-migrations]
