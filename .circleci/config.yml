@@ -289,8 +289,7 @@ jobs:
       - run:
           name: tar backend
           command: |
-            cd backend 
-            tar cvfz dist.tgz ./dist/
+            tar cvfz backend.tgz backend/
       - run:
           name: Deploy and run backend
           command: |
@@ -385,11 +384,11 @@ workflows:
       ##        only: [test-feature-branch]
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
-      - run-migrations
+      #- run-migrations:
       #    requires: [configure-infrastructure]
       #- deploy-frontend:
       #    requires: [run-migrations]
-      #- deploy-backend:
+      - deploy-backend
       #    requires: [run-migrations]
       #- smoke-test:
       #    requires: [deploy-backend]
