@@ -95,7 +95,6 @@ jobs:
 
   test-frontend:
     docker:
-      # Docker image here
       - image: circleci/node:13.8.0
     steps:
       - checkout
@@ -127,8 +126,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      #- restore_cache:
+      #    keys: [frontend-build]
       - run: 
           name: install dependencies
           command: |
@@ -137,15 +136,15 @@ jobs:
       - run: 
           name: audit
           command: |
-            cd frontend && npm audit --audit-level=critical || exit 0
-            npm audit fix --audit-level=critical --force|| exit 0
+            cd frontend
+            npm audit fix --audit-level=critical --force
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
+      #- restore_cache:
+      #    keys: [backend-build]
       - run: 
           name: install dependencies
           command: |
@@ -154,8 +153,8 @@ jobs:
       - run:
           name: audit
           command: |
-            cd backend && npm audit --audit-level=critical || exit 0
-            npm audit fix --audit-level=critical --force|| exit 0
+            cd backend 
+            npm audit fix --audit-level=critical --force
 
   deploy-infrastructure:
     docker:
@@ -276,7 +275,7 @@ jobs:
           name: Get backend url
           command: |
             BACKEND_IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
-            export API_URL="http://${BACKEND_IP}:80"
+            export API_URL="https://${BACKEND_IP}:80"
             echo "${API_URL}"
             cd frontend && npm run build # to bake the code with backend url
       - run:
