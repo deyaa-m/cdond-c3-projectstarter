@@ -1,7 +1,7 @@
 Project Github repo : https://github.com/deyaa-m/cdond-c3-projectstarter.git
-S3 bucket: http://udapeople-40a056.s3.eu-west-2.amazonaws.com
-CDN: 
-Backend url: 
+S3 bucket: http://udapeople-38c518.s3-website.eu-west-2.amazonaws.com/
+CDN: https://d36jci3xt74wvo.cloudfront.net
+Backend url: http://3.8.100.33:80/api/status
 Prometheus server: http://35.178.162.177:80 
 
 1. missing Alerts, presentation.pdf
