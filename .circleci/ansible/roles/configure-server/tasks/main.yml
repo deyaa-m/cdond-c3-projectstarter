@@ -21,3 +21,25 @@
     name: pm2
     global: yes
 
+- name: create user pm2
+  become: yes
+  user:
+    name: pm2
+    shell: /bin/bash
+    password: pm21
+    groups: sudo
+    append: yes
+
+- name: allow using port 80 for non root
+  become: yes
+  shell: |
+    sudo apt-get install libcap2-bin
+    sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
+
+- name: create udapeople dir
+  file:
+    path: /home/pm2/udapeople
+    state: directory
+    owner: pm2
+    group: pm2
+    mode: 0775
