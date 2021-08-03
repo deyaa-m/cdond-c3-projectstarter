@@ -37,6 +37,7 @@
     setcap cap_net_bind_service=+ep /usr/bin/node
 
 - name: create udapeople dir
+  become: yes
   file:
     path: /home/pm2/udapeople
     state: directory

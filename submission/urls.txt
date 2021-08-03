@@ -2,4 +2,4 @@ Project Github repo : https://github.com/deyaa-m/cdond-c3-projectstarter.git
 S3 bucket: 
 CDN: 
 Backend url:
-Prometheus: 
+Prometheus server: http://35.178.162.177:80 
