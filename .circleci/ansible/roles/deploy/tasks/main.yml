@@ -3,12 +3,14 @@
 
 - name: untar backend on remote
   unarchive:
+    become: yes
     src: /root/project/backend/dist.tgz
     dest: /home/pm2/udapeople
     owner: pm2
     group: pm2
 
 - name: run js app
+  become_user: pm2
   shell: 
     chdir: /home/pm2/udapeople/backend
     cmd: pm2 start webpack.config.js
