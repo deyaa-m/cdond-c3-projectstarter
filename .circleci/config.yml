@@ -348,7 +348,7 @@ jobs:
           root: ./
           paths:
             - workflow      
-cleanup:
+  cleanup:
     docker:
       # Docker image here
       - image: python:3.7-alpine3.11
