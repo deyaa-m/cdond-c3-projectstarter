@@ -34,7 +34,7 @@
   become: yes
   shell: |
     apt-get install libcap2-bin
-    setcap cap_net_bind_service=+ep /usr/local/bin/node
+    setcap cap_net_bind_service=+ep /usr/bin/node
 
 - name: create udapeople dir
   file:
