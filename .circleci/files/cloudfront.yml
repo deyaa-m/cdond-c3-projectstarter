@@ -38,3 +38,7 @@ Outputs:
     Description: URL for website hosted on S3
     Export:
       Name: WorkflowID
+  endpoint:
+    Value: !GetAtt WebpageCDN.DomainName
+    Export:
+      Name: udapeople-front
