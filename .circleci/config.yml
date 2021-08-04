@@ -342,7 +342,8 @@ jobs:
       - run:
           name: save last workflow ID
           command: |
-            aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --output text > workflow
+            aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --output text > oldworkflow
+            cat oldworkflow
       - run:
           name: Install dependencies
           command: |
@@ -358,7 +359,7 @@ jobs:
       - persist_to_workspace:
           root: ./
           paths:
-            - workflow      
+            - oldworkflow      
       # Here's where you will add some code to rollback on failure            
       - revert-migrations
       - destroy-environment
@@ -375,11 +376,16 @@ jobs:
       - run:
           name: workflow id
           command: |
-            ID=$(cat workflow)
+            ID=$(cat oldworkflow)
       - run:
           name: delete front
           command: |
-            aws s3 rm s3://"udapeople-${ID}" --recursive
+            if [[ -z ${ID} ]]
+            then
+              echo "No Previous Workflows"
+            else
+              aws s3 rm s3://"udapeople-${ID}" --recursive
+            fi
       #      aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
       #- run:
       #    name: delete back
