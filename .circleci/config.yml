@@ -177,7 +177,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             echo [web] > .circleci/ansible/inventory.txt
-            aws cloudformation list-exports --output text --no-paginate | awk '{print $4}' >> .circleci/ansible/inventory.txt
+            aws cloudformation list-exports --query "Exports[?Name==\`IP-${CIRCLE_WORKFLOW_ID:0:6}\`].Value" --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/project/.circleci/ansible/
           paths:
@@ -256,7 +256,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            BACKEND_IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
+            BACKEND_IP=$(sed -n 2p .circleci/ansible/inventory.txt)
             export API_URL="https://${BACKEND_IP}:3030"
             echo "${API_URL}"
             cd frontend && npm run build # to bake the code with backend url
@@ -318,7 +318,7 @@ jobs:
       - run:
           name: Backend smoke test
           command: |
-            IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
+            IP=$(sed -n 2p .circleci/ansible/inventory.txt)
             echo ${IP}
             curl http://${IP}/api/status
       - run:
