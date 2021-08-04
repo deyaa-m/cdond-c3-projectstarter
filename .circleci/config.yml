@@ -320,7 +320,7 @@ jobs:
           command: |
             IP=$(sed -n 2p .circleci/ansible/inventory.txt)
             echo ${IP}
-            curl http://${IP}/api/status
+            curl http://${IP}:3030/api/status
       - run:
           name: Frontend smoke test.
           command: |
