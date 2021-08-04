@@ -285,7 +285,6 @@ jobs:
             cd backend 
             cp .env.sample .env
             npm i && npm run build
-            cp .env dist/
       - run:
           name: tar backend
           command: |
