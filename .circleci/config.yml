@@ -40,14 +40,14 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
-            if(( $SUCCESS==1 )); 
-            then
+            #curl -H "token: ${CIRCLE_WORKFLOW_ID:0:6}" --request GET https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID:0:6}
+            #SUCCESS = 1
+            #if(( $SUCCESS==1 )); 
+            #then
             #  cd ~/project/backend
             #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
             npm run migrations:revert
-            fi
+            #fi
             
 jobs:
   build-frontend:
@@ -172,7 +172,7 @@ jobs:
               --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6} \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
-              #exit 1
+
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -216,6 +216,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - aws-cli/install
       - run:
           name: Run migrations
           command: |
@@ -225,17 +226,19 @@ jobs:
             npm i
             cat .env
             npm run migrations
-      - run:
-          name: Send migration results to memstash
-          command: |
-            # Your code here
-            exit 0
+      #- run:
+      #    name: Send migration results to memstash
+      #    command: |
+      #      # Your code here
+      #      curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID:0:6}" --request PUT --data "ok" https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID:0:6} | grep "Item has been created"
      # Here's where you will add some code to rollback on failure      
-      - run:
-          name: Revert last migrations
-          when: on_fail
-          command: |
-            npm run migrations:revert
+      - revert-migrations
+      - destroy-environment
+      #- run:
+      #    name: Revert last migrations
+      #    when: on_fail
+      #    command: |
+      #      npm run migrations:revert
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
@@ -254,7 +257,7 @@ jobs:
           name: Get backend url
           command: |
             BACKEND_IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
-            export API_URL="https://${BACKEND_IP}:80"
+            export API_URL="https://${BACKEND_IP}:3030"
             echo "${API_URL}"
             cd frontend && npm run build # to bake the code with backend url
       - run:
@@ -263,7 +266,9 @@ jobs:
             aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:6} --recursive
             
       # Here's where you will add some code to rollback on failure      
-                    
+      - revert-migrations
+      - destroy-environment
+      
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
@@ -296,7 +301,9 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
-
+      - revert-migrations
+      - destroy-environment
+      
   smoke-test:
     docker:
       # Lightweight Docker image 
@@ -320,7 +327,9 @@ jobs:
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:6}.s3-website.eu-west-2.amazonaws.com"
             curl -s ${URL} | grep "Welcome" 
       # Here's where you will add some code to rollback on failure  
-
+      - revert-migrations
+      - destroy-environment
+      
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
@@ -345,11 +354,14 @@ jobs:
             --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
             --stack-name udapeople-CDN \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:6}"
-      # Here's where you will add some code to rollback on failure            
       - persist_to_workspace:
           root: ./
           paths:
             - workflow      
+      # Here's where you will add some code to rollback on failure            
+      - revert-migrations
+      - destroy-environment
+
   cleanup:
     docker:
       # Docker image here
@@ -366,7 +378,7 @@ jobs:
       - run:
           name: delete front
           command: |
-            aws s3 rm s3://"udapeople-${CIRCLE_WORKFLOW_ID:0:6}" --recursive
+            aws s3 rm s3://"udapeople-${ID}" --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
       - run:
           name: delete back
