@@ -160,7 +160,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:6} \
+              --stack-name udapeople-backend \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
 
@@ -169,7 +169,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6} \
+              --stack-name udapeople-frontend \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
 
@@ -177,7 +177,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             echo [web] > .circleci/ansible/inventory.txt
-            aws cloudformation list-exports --query "Exports[?Name==\`IP-${CIRCLE_WORKFLOW_ID:0:6}\`].Value" --output text >> .circleci/ansible/inventory.txt
+            aws cloudformation list-exports --query "Exports[?Name==\`IP\`].Value" --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/project/.circleci/ansible/
           paths:
@@ -379,11 +379,11 @@ jobs:
           name: delete front
           command: |
             aws s3 rm s3://"udapeople-${ID}" --recursive
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
-      - run:
-          name: delete back
-          command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
+      #      aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
+      #- run:
+      #    name: delete back
+      #    command: |
+      #      aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
 
       #- run:
       #    name: Get old stack workflow id
