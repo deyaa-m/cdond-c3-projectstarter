@@ -33,7 +33,7 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.micro
+      InstanceType: t2.medium
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: circleci # If you use another key pair name, you should change this value to match.
