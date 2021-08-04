@@ -356,6 +356,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - aws-alpine
       - attach_workspace:
           at: ./
       - run:
