@@ -343,7 +343,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
-            --stack-name udapeople-CDN-${CIRCLE_WORKFLOW_ID:0:6} \
+            --stack-name udapeople-CDN \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:6}"
       # Here's where you will add some code to rollback on failure            
       - persist_to_workspace:
@@ -371,11 +371,6 @@ jobs:
           name: delete back
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
-
-      - run:
-          name: delete CDN
-          command: |
-            aws cloudformation delete-stack --stack-name udapeople-CDN-${ID}
 
       #- run:
       #    name: Get old stack workflow id
