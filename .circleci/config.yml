@@ -313,11 +313,11 @@ jobs:
           command: |
             IP=$(aws cloudformation list-exports --output text --no-paginate | awk '{print $4}')
             echo ${IP}
-            curl http://${IP}/api/status || exit 0
+            curl http://${IP}/api/status
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3.eu-west-2.amazonaws.com"
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:6}.s3.eu-west-2.amazonaws.com"
             curl -s ${URL} | grep "Welcome" 
       # Here's where you will add some code to rollback on failure  
 
@@ -425,4 +425,3 @@ workflows:
       - cleanup:
           requires: [cloudfront-update]
 
-          
