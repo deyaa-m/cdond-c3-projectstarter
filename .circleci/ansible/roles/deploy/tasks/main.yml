@@ -10,6 +10,7 @@
     group: pm2
 
 - name: run js app
+  become: yes
   become_user: pm2
   shell: 
     chdir: /home/pm2/udapeople/backend
