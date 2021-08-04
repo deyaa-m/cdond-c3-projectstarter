@@ -311,10 +311,12 @@ jobs:
     steps:
       - checkout
       - aws-alpine
+      - attach_workspace:
+          at: ~/project/.circleci/ansible/
       - run:
           name: Install dependencies
           command: |
-            apk add curl
+            apk add curl nodejs npm
       - run:
           name: Backend smoke test
           command: |
@@ -344,8 +346,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
-            exit 0
+            apk add nodejs npm
       - run:
           name: Create/Update cloudfront distribution
           command: |
