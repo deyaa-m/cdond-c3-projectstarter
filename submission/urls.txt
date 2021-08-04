@@ -1,11 +1,8 @@
 Project Github repo : https://github.com/deyaa-m/cdond-c3-projectstarter.git
-S3 bucket: http://udapeople-38c518.s3-website.eu-west-2.amazonaws.com/
-CDN: https://d36jci3xt74wvo.cloudfront.net
-Backend url: http://3.8.100.33:80/api/status
+S3 bucket: http://udapeople-656707.s3-website.eu-west-2.amazonaws.com/
+CDN: http://d1mlcnahvmqnyo.cloudfront.net
+Backend url: http://35.178.55.111:3030/api/status
 Prometheus server: http://35.178.162.177:80 
 
 1. missing Alerts, presentation.pdf
-2. unable to solve auditing bug
-3. unable to solve migration issue "database "****" doesn't exist"
-4. skipped backend smoke test 
-5. need more screenshots
+2. need more screenshots
