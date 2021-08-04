@@ -11,7 +11,7 @@
 
 - name: run js app
   become: yes
-  become_user: pm2
+  #become_user: pm2
   shell: 
     chdir: /home/pm2/udapeople/backend
     cmd: pm2 start npm --name backend -- start
