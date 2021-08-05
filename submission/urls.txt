@@ -4,5 +4,8 @@ CDN: http://d1mlcnahvmqnyo.cloudfront.net
 Backend url: http://35.178.55.111:3030/api/status
 Prometheus server: http://35.178.162.177:80 
 
-1. missing Alerts, presentation.pdf
-2. need more screenshots
+1. presentation.pdf
+2. Alerts:
+    - currently don't have active slack channel
+    - can't use email, my gmail is protected by 2FA
+    - can't use localhost, needs an smtp server setup
