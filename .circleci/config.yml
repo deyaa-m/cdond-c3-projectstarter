@@ -243,6 +243,8 @@ jobs:
       - aws-cli/install
       - restore_cache:
           keys: [frontend-build]
+      - attach_workspace:
+          at: ~/project/.circleci/ansible/
       - run:
           name: Install dependencies
           command: |
