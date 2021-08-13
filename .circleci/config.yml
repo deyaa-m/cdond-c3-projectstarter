@@ -92,11 +92,11 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: 
-          name: install dependencies
-          command: |
-            #apk add nodejs npm
-            exit 0
+      #- run: 
+      #    name: install dependencies
+      #    command: |
+      #      #apk add nodejs npm
+      #      exit 0
       - run: cd frontend && npm run test        
 
   test-backend:
@@ -106,23 +106,23 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run: 
-          name: install dependencies
-          command: |
-            #apk add nodejs npm
-            exit 0
-      - run: cd backend && npm run test || exit 0
+      #- run: 
+      #    name: install dependencies
+      #    command: |
+      #      #apk add nodejs npm
+      #      exit 0
+      - run: cd backend && npm run test 
 
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: 
-          name: install dependencies
-          command: |
-            #apk add nodejs npm
-            exit 0
+      #- run: 
+      #    name: install dependencies
+      #    command: |
+      #      #apk add nodejs npm
+      #      exit 0
       - run: 
           name: audit
           command: |
@@ -133,11 +133,11 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: 
-          name: install dependencies
-          command: |
-            #apk add nodejs npm
-            exit 0
+      #- run: 
+      #    name: install dependencies
+      #    command: |
+      #      #apk add nodejs npm
+      #      exit 0
       - run:
           name: audit
           command: |
@@ -240,11 +240,11 @@ jobs:
           keys: [frontend-build]
       - attach_workspace:
           at: ~/project/.circleci/ansible/
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-              exit 0
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+      #      # your code here
+      #        exit 0
       - run:
           name: Get backend url
           command: |
