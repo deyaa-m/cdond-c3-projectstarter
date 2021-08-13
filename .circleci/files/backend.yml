@@ -48,4 +48,4 @@ Outputs:
   ip:
     Value: !GetAtt EC2Instance.PublicIp
     Export:
-      Name: IP
+      Name: IP-${ID}
