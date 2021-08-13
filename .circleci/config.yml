@@ -26,8 +26,8 @@ commands:
           when: on_fail
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:6} --recursive
-            aws cloudformation delete-stack --stack-name "udapeople-frontend"
-            aws cloudformation delete-stack --stack-name "udapeople-backend"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:6}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -155,7 +155,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name udapeople-backend \
+              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:6} \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
 
@@ -164,7 +164,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --stack-name udapeople-frontend \
+              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:6} \
               --tags project="udapeople-${CIRCLE_WORKFLOW_ID:0:6}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:6}"  
 
@@ -332,10 +332,12 @@ jobs:
       - checkout
       - aws-alpine
       - run:
-          name: save last workflow ID
+          name: save last workflow ID, stacks
           command: |
             aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --output text > oldworkflow
+            aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --output text > stacks
             cat oldworkflow
+            cat stacks
       - run:
           name: Install dependencies
           command: |
@@ -351,14 +353,14 @@ jobs:
       - persist_to_workspace:
           root: ./
           paths:
-            - oldworkflow      
+            - oldworkflow
+            - stacks      
       # Here's where you will add some code to rollback on failure            
       - revert-migrations
       - destroy-environment
 
   cleanup:
     docker:
-      # Docker image here
       - image: python:3.7-alpine3.11
     steps:
       - checkout
@@ -366,19 +368,44 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
-          name: workflow id
+          name: Get old stack workflow id
           command: |
-            ID=$(cat oldworkflow)
+            # your code here
+            export OldWorkflowID="$(cat oldworkflow)"
+            export STACKS=[$(cat stacks)] #put the list of stacks here
       - run:
-          name: delete front
+          name: Remove old stacks and files
           command: |
-            if [[ -z ${ID} ]]
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              echo "No Previous Workflows"
-            else
-              aws s3 rm s3://"udapeople-${ID}" --recursive
+              aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              # your code here
             fi
-          
+
+    #docker:
+    #  # Docker image here
+    #  - image: python:3.7-alpine3.11
+    #steps:
+    #  - checkout
+    #  - aws-alpine
+    #  - attach_workspace:
+    #      at: ./
+    #  - run:
+    #      name: workflow id
+    #      command: |
+    #        ID=$(cat oldworkflow)
+    #  - run:
+    #      name: delete front
+    #      command: |
+    #        if [[ -z ${ID} ]]
+    #        then
+    #          echo "No Previous Workflows"
+    #        else
+    #          aws s3 rm s3://"udapeople-${ID}" --recursive
+    #        fi
+    #      
 workflows:
   default:
     jobs:
@@ -394,9 +421,9 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    filters:
-      #      branches:
-      #        only: [test-feature-branch]
+          filters:
+            branches:
+              only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
