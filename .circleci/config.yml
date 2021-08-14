@@ -8,11 +8,11 @@ commands:
   notify:
     description: Slack Notifications
     steps:
-       - slack/notify:
-          channel: test
-          event: fail
-          template: basic_fail_1
-          when: on_fail
+      - slack/notify:
+         channel: test
+         event: fail
+         template: basic_fail_1
+      #   when: on_fail
   aws-alpine:
     description: install aws-cli on alpine distros
     steps:
