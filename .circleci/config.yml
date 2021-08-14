@@ -2,8 +2,17 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@2.0.3
-
+  slack: circleci/slack@4.4.2
+  
 commands:
+  notify:
+    description: Slack Notifications
+    steps:
+       - slack/notify:
+          channel: test
+          event: fail
+          template: basic_fail_1
+          when: on_fail
   aws-alpine:
     description: install aws-cli on alpine distros
     steps:
@@ -64,6 +73,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - notify
 
   build-backend:
     docker:
@@ -84,6 +94,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - notify
 
   test-frontend:
     docker:
@@ -98,6 +109,7 @@ jobs:
       #      #apk add nodejs npm
       #      exit 0
       - run: cd frontend && npm run test        
+      - notify
 
   test-backend:
     docker:
@@ -128,6 +140,8 @@ jobs:
           command: |
             cd frontend && npm i
             npm audit fix --audit-level=critical --force
+      - notify
+  
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -143,6 +157,7 @@ jobs:
           command: |
             cd backend 
             npm audit fix --audit-level=critical --force
+      - notify
 
   deploy-infrastructure:
     docker:
@@ -172,13 +187,15 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             echo [web] > .circleci/ansible/inventory.txt
-            aws cloudformation list-exports --query "Exports[?Name==\`ip\`].Value" --output text >> .circleci/ansible/inventory.txt
+            aws cloudformation list-exports --query "Exports[?Key==\`ip\`].Value" --output text >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/project/.circleci/ansible/
           paths:
             - inventory.txt
       # Here's where you will add some code to rollback on failure
-      - destroy-environment      
+      - notify
+      #- destroy-environment      
 
   configure-infrastructure:
     docker:
@@ -201,7 +218,8 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure     
+      - notify 
       - aws-alpine
       - destroy-environment      
 
@@ -227,8 +245,10 @@ jobs:
       #      # Your code here
       #      curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID:0:6}" --request PUT --data "ok" https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID:0:6} | grep "Item has been created"
      # Here's where you will add some code to rollback on failure      
+      - notify
       - revert-migrations
       - destroy-environment
+  
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
@@ -258,6 +278,7 @@ jobs:
             aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:6} --recursive
             
       # Here's where you will add some code to rollback on failure      
+      - notify
       - revert-migrations
       - destroy-environment
       
@@ -293,6 +314,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
+      - notify
       - revert-migrations
       - destroy-environment
       
@@ -313,7 +335,7 @@ jobs:
           name: Backend smoke test
           command: |
             IP=$(sed -n 2p .circleci/ansible/inventory.txt)
-            echo ${IP}
+            echo ${IP} && cat .circleci/ansible/inventory.txt
             curl http://${IP}:3030/api/status
       - run:
           name: Frontend smoke test.
@@ -321,8 +343,9 @@ jobs:
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:6}.s3-website.eu-west-2.amazonaws.com"
             curl -s ${URL} | grep "Welcome" 
       # Here's where you will add some code to rollback on failure  
+      - notify
       - revert-migrations
-      - destroy-environment
+      #- destroy-environment
       
   cloudfront-update:
     docker:
@@ -356,6 +379,7 @@ jobs:
             - oldworkflow
             - stacks      
       # Here's where you will add some code to rollback on failure            
+      - notify
       - revert-migrations
       - destroy-environment
 
@@ -383,6 +407,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               # your code here
             fi
+      - notify
 
     #docker:
     #  # Docker image here
