@@ -1,11 +1,11 @@
 Project Github repo : https://github.com/deyaa-m/cdond-c3-projectstarter.git
-S3 bucket: http://udapeople-53a9b3.s3-website.eu-west-2.amazonaws.com/
+S3 bucket: http://udapeople-51ed95.s3-website.eu-west-2.amazonaws.com/
 CDN: http://de58ep3yp7ets.cloudfront.net/
-Backend url: http://18.133.195.24:3030/api/status
+Backend url: http://18.168.205.54:3030/api/status
 Prometheus server: http://35.178.162.177:80 
 
-1. presentation.pdf
-2. Alerts:
-    - currently don't have active slack channel
-    - can't use email, my gmail is protected by 2FA
-    - can't use localhost, needs an smtp server setup
+1. bought a domain
+2. created hosted zone
+3. created ACM certificate 
+4. created load balancer with backend instance as target group
+5. ALB with redirect https from s3 to http from ec2
