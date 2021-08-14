@@ -241,7 +241,6 @@ jobs:
       #      # Your code here
       #      curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID:0:6}" --request PUT --data "ok" https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID:0:6} | grep "Item has been created"
      # Here's where you will add some code to rollback on failure      
-      - notify
       - revert-migrations
       - destroy-environment
   
@@ -274,7 +273,6 @@ jobs:
             aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:6} --recursive
             
       # Here's where you will add some code to rollback on failure      
-      - notify
       - revert-migrations
       - destroy-environment
       
