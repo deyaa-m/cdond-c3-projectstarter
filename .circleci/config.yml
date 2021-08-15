@@ -401,6 +401,7 @@ jobs:
               # your code here
             else
               echo first workflow
+            fi
 
       #- notify
 
