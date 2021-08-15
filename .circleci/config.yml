@@ -97,7 +97,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -401,7 +401,7 @@ jobs:
               # your code here
             else
               echo first workflow
-              
+
       #- notify
 
     #docker:
