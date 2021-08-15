@@ -352,9 +352,9 @@ jobs:
           name: save last workflow ID, stacks
           command: |
             aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --output text > oldworkflow
-            aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --output text > stacks
+            #aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --output text > stacks
             cat oldworkflow
-            cat stacks
+            #cat stacks
       - run:
           name: Install dependencies
           command: |
@@ -371,7 +371,7 @@ jobs:
           root: ./
           paths:
             - oldworkflow
-            - stacks      
+            #- stacks      
       # Here's where you will add some code to rollback on failure            
       - notify
       - revert-migrations
@@ -390,7 +390,7 @@ jobs:
           command: |
             # your code here
             export OldWorkflowID="$(cat oldworkflow)"
-            export STACKS=[$(cat stacks)] #put the list of stacks here
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text )) #put the list of stacks here
       - run:
           name: Remove old stacks and files
           command: |
