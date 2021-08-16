@@ -269,7 +269,7 @@ jobs:
             export API_URL=${BACKEND_IP}:3030
             #"https://udapeople-2049182830.eu-west-2.elb.amazonaws.com"
             echo "${API_URL}"
-            cd frontend && npm audit fix && npm run build # to bake the code with backend url
+            cd frontend && npm audit fix && npm i && npm run build # to bake the code with backend url
       - run:
           name: Deploy frontend objects
           command: |
@@ -297,9 +297,9 @@ jobs:
       - run:
           name: build backend
           command: |
-            cd backend 
-            cp .env.sample .env
-            npm i && npm update && npm run build 
+            cd backend && echo ENVIRONMENT=production > .env
+            cat .env.sample >> .env
+            npm i && npm run build 
       - run:
           name: tar backend
           command: |
