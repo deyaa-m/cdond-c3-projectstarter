@@ -16,6 +16,7 @@
     chdir: /home/pm2/udapeople/backend
     cmd: pm2 start npm --name backend -- start
   environment:
+    NODE_ENV: production
     ENVIRONMENT: production
     TYPEORM_HOST: udapeople.cvoqi16sdmf6.eu-west-2.rds.amazonaws.com
     TYPEORM_PORT: 5432
