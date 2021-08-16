@@ -299,7 +299,7 @@ jobs:
           command: |
             cd backend && echo ENVIRONMENT=production > .env
             cat .env.sample >> .env
-            npm i && npm run build 
+            npm update && npm i && npm run build 
       - run:
           name: tar backend
           command: |
