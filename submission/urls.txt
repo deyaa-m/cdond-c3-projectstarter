@@ -1,7 +1,7 @@
 Project Github repo : https://github.com/deyaa-m/cdond-c3-projectstarter.git
-S3 bucket: http://udapeople-51ed95.s3-website.eu-west-2.amazonaws.com/
-CDN: http://de58ep3yp7ets.cloudfront.net/
-Backend url: http://18.168.205.54:3030/api/status
+S3 bucket: http://udapeople-fecd04.s3-website.eu-west-2.amazonaws.com/
+CDN: http://d2hwz3qs7t1jrt.cloudfront.net/
+Backend url: http://35.177.56.212:3030/api/status
 Prometheus server: http://35.178.162.177:80 
 
 1. bought a domain
