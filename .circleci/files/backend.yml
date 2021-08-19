@@ -46,6 +46,6 @@ Resources:
 
 Outputs:
   ip:
-    Value: !GetAtt EC2Instance.PublicDnsName
+    Value: !GetAtt EC2Instance.PublicIp
     Export:
       Name: !Sub IP-${ID}
