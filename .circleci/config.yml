@@ -298,7 +298,8 @@ jobs:
           command: |
             cd backend && echo ENVIRONMENT=production > .env
             cat .env.sample >> .env
-            npm i && npm update @standard-version && npm run build 
+            npm install -g npm-check-updates && ncu -u
+            npm update && npm i && npm run build 
       - run:
           name: tar backend
           command: |
