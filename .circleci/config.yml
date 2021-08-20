@@ -297,7 +297,7 @@ jobs:
             cd backend && echo ENVIRONMENT=production > .env
             cat .env.sample >> .env
             npm i && npm install -g npm-check-updates
-            ncu -u && npm i standard-version@7
+            ncu -u standard-version && npm i standard-version@7
             npm run build
       - run:
           name: tar backend
