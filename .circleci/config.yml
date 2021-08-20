@@ -138,7 +138,6 @@ jobs:
           command: |
             cd frontend && npm i
             npm audit fix --audit-level=critical --force
-            npm audit fix
   
   scan-backend:
     docker:
@@ -155,8 +154,6 @@ jobs:
           command: |
             cd backend 
             npm audit fix --audit-level=critical --force
-            npm install -g npm-check-updates && ncu -u
-            npm update
 
   deploy-infrastructure:
     docker:
@@ -299,7 +296,9 @@ jobs:
           command: |
             cd backend && echo ENVIRONMENT=production > .env
             cat .env.sample >> .env
-            npm i && npm run build 
+            npm i && npm install -g npm-check-updates
+            ncu -u && npm i standard-version@7
+            npm run build
       - run:
           name: tar backend
           command: |
